@@ -7,21 +7,38 @@ services:
       - "3000:3000"
     depends_on:
       - backend
+    networks:
+      - app-network
+
   backend:
     build:
       context: ./backend
     ports:
       - "5000:5000"
     environment:
-      - MONGO_URI=mongodb://mongo:27017/mydatabase
+      - MONGO_URI=mongodb://admin:password123@mongo:27017/mydatabase  # Using admin credentials for MongoDB
     depends_on:
       - mongo
+    networks:
+      - app-network
+
   mongo:
     image: mongo
     container_name: mongodb
     ports:
-      - "27017:27017"
+      - "4000:27017"  # Corrected port mapping to allow access on port 4000
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password123
+      MONGO_INITDB_DATABASE: mydatabase  # Database name
     volumes:
       - mongodb_data:/data/db
+    networks:
+      - app-network
+
 volumes:
   mongodb_data:
+
+networks:
+  app-network:  # This network allows containers to communicate with each other
+    driver: bridge
