@@ -17,8 +17,9 @@ function Contact() {
     },[])
 
     const axiosFetchData = async(processing) => {
-        // Updated the URL for the GET request
-        await axios.get('http://backend:4000/users')
+        // Use environment variable REACT_APP_BACKEND_URL for the GET request
+        const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:4000'; // Fallback to localhost for development
+        await axios.get(`${backendUrl}/users`)
         .then(res => {
             if (processing) {
                 setSelectData(res.data)
@@ -34,8 +35,9 @@ function Contact() {
             message: message
         }
 
-        // Updated the URL for the POST request
-        await axios.post('http://backend:4000/contact/send', postData)
+        // Use environment variable REACT_APP_BACKEND_URL for the POST request
+        const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:4000'; // Fallback to localhost for development
+        await axios.post(`${backendUrl}/contact/send`, postData)
         .then(res => setError(<p className="success">{res.data}</p>))
     }
 
