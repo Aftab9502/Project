@@ -16,29 +16,9 @@ function Contact() {
         }
     },[])
 
-    // this code shows how to use the React fetch http for GET and POST
-    // const fetchData = async(processing) => {
-    //     const options = {
-    //         method: 'POST',
-    //         headers: {'Content-type': 'application/json'},
-    //         body: JSON.stringify({
-    //             email: email,
-    //             message: message
-    //         })
-    //     }
-    //
-    //     await fetch('https://jsonplaceholder.typicode.com/users')
-    //     .then(res => res.json())
-    //     .then(data => {
-    //         if (processing) {
-    //             setSelectData(data)
-    //         }
-    //     })
-    //     .catch(err => console.log(err))
-    // }
-
     const axiosFetchData = async(processing) => {
-        await axios.get('http://localhost:4000/users')
+        // Updated the URL for the GET request
+        await axios.get('http://backend:4000/users')
         .then(res => {
             if (processing) {
                 setSelectData(res.data)
@@ -54,7 +34,8 @@ function Contact() {
             message: message
         }
 
-        await axios.post('http://localhost:4000/contact/send', postData)
+        // Updated the URL for the POST request
+        await axios.post('http://backend:4000/contact/send', postData)
         .then(res => setError(<p className="success">{res.data}</p>))
     }
 
