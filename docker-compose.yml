@@ -2,42 +2,29 @@ version: '3.8'
 services:
   frontend:
     build:
-      context: ./frontend
+      context: ./frontend  # Path to your frontend directory
     ports:
-      - "3000:3000"
+      - "3000:3000"  # Expose frontend on port 3000
     depends_on:
-      - backend
+      - backend  # Ensure backend starts before frontend
     networks:
       - app-network
+    environment:
+      - REACT_APP_BACKEND_URL=http://backend:4000  # Define backend URL for React app
 
   backend:
     build:
-      context: ./backend
+      context: ./backend  # Path to your backend directory
     ports:
-      - "5000:5000"
+      - "4000:4000"  # Expose backend on port 4000
     environment:
-      - MONGO_URI=mongodb://admin:password123@mongo:27017/mydatabase  # Using admin credentials for MongoDB
-    depends_on:
-      - mongo
-    networks:
-      - app-network
-
-  mongo:
-    image: mongo
-    container_name: mongodb
-    ports:
-      - "4000:27017"  # Corrected port mapping to allow access on port 4000
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: admin
-      MONGO_INITDB_ROOT_PASSWORD: password123
-      MONGO_INITDB_DATABASE: mydatabase  # Database name
-    volumes:
-      - mongodb_data:/data/db
+      - DB_URI=mongodb+srv://aftabsayyad9502:GGBbibDl3bfPgX4B@cluster0.5f9if.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0  # MongoDB Atlas URI
+      - PORT=4000  # Port for backend server
     networks:
       - app-network
 
 volumes:
-  mongodb_data:
+  mongodb_data:  # (Not necessary since you're using MongoDB Atlas)
 
 networks:
   app-network:  # This network allows containers to communicate with each other
