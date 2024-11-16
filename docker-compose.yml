@@ -1,4 +1,5 @@
 version: '3.8'
+
 services:
   frontend:
     build:
@@ -18,13 +19,12 @@ services:
     ports:
       - "4000:4000"  # Expose backend on port 4000
     environment:
-      - DB_URI=mongodb+srv://aftabsayyad9502:GGBbibDl3bfPgX4B@cluster0.5f9if.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0  # MongoDB Atlas URI
+      - DB_URI=${DB_URI}  # MongoDB Atlas URI taken from .env file
       - PORT=4000  # Port for backend server
     networks:
       - app-network
-
-volumes:
-  mongodb_data:  # (Not necessary since you're using MongoDB Atlas)
+    env_file:
+      - .env  # Load environment variables from .env file
 
 networks:
   app-network:  # This network allows containers to communicate with each other
